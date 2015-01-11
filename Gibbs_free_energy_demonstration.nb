@@ -1,0 +1,1911 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     78626,       1902]
+NotebookOptionsPosition[     74882,       1787]
+NotebookOutlinePosition[     76487,       1837]
+CellTagsIndexPosition[     76159,       1825]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["\<\
+Entropy and the Gibbs Free Energy\
+\>", "DemoTitle",
+ CellChangeTimes->{{3.6114316384736867`*^9, 3.6114316472152*^9}}],
+
+Cell["", "InitializationSection"],
+
+Cell[CellGroupData[{
+
+Cell["", "ManipulateSection"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"kb", "=", " ", "1"}], "  ", 
+    RowBox[{"(*", " ", "1.3806488*^23", "*)"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"\[Beta]", "=", 
+     RowBox[{"1", "/", 
+      RowBox[{"(", 
+       RowBox[{"kb", "*", "Temp"}], ")"}]}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{
+      RowBox[{"HEPNumStates", "=", 
+       RowBox[{"totalStates", "-", "LEPNumStates"}]}], ";"}], "  ", 
+     RowBox[{"(*", " ", 
+      RowBox[{
+      "high", " ", "entropy", " ", "phase", " ", "number", " ", "of", " ", 
+       "states"}], " ", "*)"}], "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"totalStates", "=", 
+     RowBox[{"LEPNumStates", "+", "HEPNumStates"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"stateVector", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{"i", ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "1", ",", "totalStates"}], "}"}]}], " ", "]"}]}], 
+    ";", "\[IndentingNewLine]", 
+    RowBox[{"energy", "=", 
+     RowBox[{
+      RowBox[{"UnitStep", "[", 
+       RowBox[{"stateVector", "-", "LEPNumStates", "-", "1"}], "]"}], "*", 
+      "deltaEnergy"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"partition", "=", 
+     RowBox[{"Total", "[", 
+      RowBox[{"Exp", "[", 
+       RowBox[{
+        RowBox[{"-", "\[Beta]"}], " ", "energy"}], "]"}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"relativeProb", "=", 
+     RowBox[{"Exp", "[", 
+      RowBox[{
+       RowBox[{"-", "\[Beta]"}], " ", "energy"}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"probability", "=", 
+     RowBox[{
+      FractionBox["relativeProb", "partition"], "//", "N"}]}], ";", 
+    RowBox[{"(*", 
+     RowBox[{
+     "vector", " ", "of", " ", "probabilities", " ", "for", " ", "each", " ", 
+      "state"}], "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"acuumProb", "=", 
+     RowBox[{"Accumulate", "[", "probability", "]"}]}], ";", 
+    RowBox[{"(*", 
+     RowBox[{
+     "accumulate", " ", "probability", " ", "such", " ", "that", " ", "the", 
+      " ", "random", " ", "number", " ", "appropiately", " ", "chooses", " ", 
+      "high"}], " ", "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"popRandVector", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"RandomReal", "[", "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "1", ",", "pop"}], "}"}]}], "]"}]}], ";", 
+    RowBox[{"(*", 
+     RowBox[{
+     "assign", " ", "random", " ", "number", " ", "to", " ", "each", " ", 
+      "particle"}], "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"(*", "calculate", " ", "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"moleculeDist", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"Max", "[", 
+        RowBox[{
+         RowBox[{"Position", "[", 
+          RowBox[{
+           RowBox[{"Join", "[", 
+            RowBox[{
+             RowBox[{"{", "0", "}"}], ",", "acuumProb"}], "]"}], ",", 
+           RowBox[{"_", "?", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"#", "<", 
+               RowBox[{"popRandVector", "[", 
+                RowBox[{"[", "i", "]"}], "]"}]}], "&"}], ")"}]}]}], "]"}], 
+         " ", "//", "Flatten"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "1", ",", "pop"}], "}"}]}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"hist", "=", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"Count", "[", 
+        RowBox[{"moleculeDist", ",", "i"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "1", ",", 
+         RowBox[{"Max", "[", "moleculeDist", "]"}]}], "}"}]}], "]"}]}], ";", 
+    RowBox[{"(*", 
+     RowBox[{
+     "histogram", " ", "of", " ", "the", " ", "energy", " ", "states"}], 
+     "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"particles", "=", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Flatten", "[", 
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{"Table", "[", 
+           RowBox[{
+            RowBox[{"i", "+", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"1", "/", 
+                RowBox[{"hist", "[", 
+                 RowBox[{"[", "i", "]"}], "]"}]}], ")"}], "*", "j"}]}], ",", 
+            RowBox[{"{", 
+             RowBox[{"j", ",", "1", ",", 
+              RowBox[{"hist", "[", 
+               RowBox[{"[", "i", "]"}], "]"}]}], "}"}]}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "1", ",", 
+            RowBox[{"Length", "[", "hist", "]"}]}], "}"}]}], "]"}], "]"}], 
+       "-", "1"}], " ", "//", "N"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Graphics", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Text", "[", 
+         RowBox[{
+          RowBox[{"LT", " ", "Phase"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"LEPNumStates", "-", "0.5"}], ",", "1.5"}], "}"}]}], 
+         "]"}], ",", 
+        RowBox[{"Text", "[", 
+         RowBox[{
+          RowBox[{"HT", " ", "Phase"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"LEPNumStates", "+", "0.6"}], ",", "1.5"}], "}"}]}], 
+         "]"}], ",", "Black", ",", "Dashed", ",", 
+        RowBox[{"Line", "[", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"LEPNumStates", ",", "0"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"LEPNumStates", ",", "5"}], "}"}]}], "}"}], "]"}], ",", 
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{"Disk", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"particles", "[", 
+               RowBox[{"[", "i", "]"}], "]"}], ",", 
+              RowBox[{"deltaEnergy", "*", 
+               RowBox[{"UnitStep", "[", 
+                RowBox[{
+                 RowBox[{"particles", "[", 
+                  RowBox[{"[", "i", "]"}], "]"}], "-", "LEPNumStates", "-", 
+                 ".01"}], "]"}]}]}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"0.1", "*", 
+               RowBox[{"totalStates", "/", "25"}]}], ",", "0.1"}], "}"}]}], 
+           "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "1", ",", "pop"}], "}"}]}], "]"}], ",", 
+        RowBox[{"Text", "[", 
+         RowBox[{
+          RowBox[{"Style", "[", 
+           RowBox[{
+            RowBox[{"\"\<Temperature \>\"", " ", "<>", " ", 
+             RowBox[{"ToString", "[", "Temp", "]"}]}], ",", "Large", ",", 
+            "Red", ",", 
+            RowBox[{"TextAlignment", "\[Rule]", "Left"}]}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"2", "*", 
+             RowBox[{"totalStates", "/", "25"}]}], ",", "4.5"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "1"}], ",", "0"}], "}"}]}], "]"}], ",", 
+        RowBox[{"Text", "[", 
+         RowBox[{
+          RowBox[{"Style", "[", 
+           RowBox[{
+            RowBox[{"\"\<Population \>\"", " ", "<>", " ", 
+             RowBox[{"ToString", "[", "pop", "]"}]}], ",", "Large", ",", 
+            "Purple", ",", 
+            RowBox[{"TextAlignment", "\[Rule]", "Left"}]}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"2", "*", 
+             RowBox[{"totalStates", "/", "25"}]}], ",", "4"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "1"}], ",", "0"}], "}"}]}], "]"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Text", "[", 
+         RowBox[{
+          RowBox[{"Style", "[", 
+           RowBox[{
+            RowBox[{"\"\<Low Temp Phase \>\"", " ", "<>", " ", 
+             RowBox[{"ToString", "[", 
+              RowBox[{"Round", "[", 
+               RowBox[{
+                RowBox[{"100", "*", 
+                 RowBox[{
+                  RowBox[{"Length", "[", 
+                   RowBox[{"Select", "[", 
+                    RowBox[{"particles", ",", 
+                    RowBox[{
+                    RowBox[{"#", "<", "LEPNumStates"}], " ", "&"}]}], "]"}], 
+                   "]"}], "/", 
+                  RowBox[{"Length", "[", "particles", "]"}]}]}], "//", "N"}], 
+               "]"}], "]"}], "<>", "  ", "\"\<%\>\""}], ",", "Large", ",", 
+            "Blue"}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"7", "*", 
+             RowBox[{"totalStates", "/", "25"}]}], ",", "4"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "1"}], ",", "0"}], "}"}]}], "]"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Text", "[", 
+         RowBox[{
+          RowBox[{"Style", "[", 
+           RowBox[{
+            RowBox[{"\"\<High Temp Phase \>\"", " ", "<>", " ", 
+             RowBox[{"ToString", "[", 
+              RowBox[{"Round", "[", 
+               RowBox[{
+                RowBox[{"100", "*", 
+                 RowBox[{
+                  RowBox[{"Length", "[", 
+                   RowBox[{"Select", "[", 
+                    RowBox[{"particles", ",", 
+                    RowBox[{
+                    RowBox[{"#", "\[GreaterEqual]", "LEPNumStates"}], " ", 
+                    "&"}]}], "]"}], "]"}], "/", 
+                  RowBox[{"Length", "[", "particles", "]"}]}]}], "//", "N"}], 
+               "]"}], "]"}], "<>", "  ", "\"\<%\>\""}], ",", "Large", ",", 
+            "Blue"}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"7", "*", 
+             RowBox[{"totalStates", "/", "25"}]}], ",", "4.5"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "1"}], ",", "0"}], "}"}]}], "]"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Text", "[", 
+         RowBox[{
+          RowBox[{"Style", "[", 
+           RowBox[{
+            RowBox[{"\"\<G of LT \>\"", " ", "<>", " ", 
+             RowBox[{"ToString", "[", 
+              RowBox[{"NumberForm", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"0", "-", 
+                  RowBox[{"Temp", "*", 
+                   RowBox[{"Log", "[", "LEPNumStates", "]"}]}]}], "//", "N"}],
+                 ",", 
+                RowBox[{"{", 
+                 RowBox[{"3", ",", "3"}], "}"}]}], "]"}], "]"}]}], ",", 
+            "Large", ",", "Gray"}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"20", "*", 
+             RowBox[{"totalStates", "/", "25"}]}], ",", "4.8"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "1"}], ",", "1"}], "}"}]}], "]"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Text", "[", 
+         RowBox[{
+          RowBox[{"Style", "[", 
+           RowBox[{
+            RowBox[{"\"\<G of HT \>\"", " ", "<>", " ", 
+             RowBox[{"ToString", "[", 
+              RowBox[{"NumberForm", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"deltaEnergy", "-", 
+                  RowBox[{"Temp", "*", 
+                   RowBox[{"Log", "[", "HEPNumStates", "]"}]}]}], "//", "N"}],
+                 ",", 
+                RowBox[{"{", 
+                 RowBox[{"3", ",", "3"}], "}"}]}], "]"}], "]"}]}], ",", 
+            "Large", ",", "Gray"}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"20", "*", 
+             RowBox[{"totalStates", "/", "25"}]}], ",", "4.0"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "1"}], ",", "1"}], "}"}]}], "]"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Text", "[", 
+         RowBox[{
+          RowBox[{"Style", "[", 
+           RowBox[{
+            RowBox[{
+            "\"\<Relative probability\\n of the high energy states\\n \>\"", 
+             " ", "<>", " ", 
+             RowBox[{"ToString", "[", 
+              RowBox[{"NumberForm", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"Exp", "[", 
+                  RowBox[{
+                   RowBox[{"-", "\[Beta]"}], " ", "*", " ", "deltaEnergy"}], 
+                  "]"}], "//", "N"}], ",", 
+                RowBox[{"{", 
+                 RowBox[{"8", ",", "8"}], "}"}]}], "]"}], "]"}]}], ",", 
+            "Large", ",", "Orange"}], "]"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"13", "*", 
+             RowBox[{"totalStates", "/", "25"}]}], ",", "4.8"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"-", "1"}], ",", "1"}], "}"}]}], "]"}]}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"PlotRange", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"0", ",", "totalStates"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"0", ",", "5"}], "}"}]}], "}"}]}], ",", 
+      RowBox[{"Frame", "\[Rule]", "True"}], ",", 
+      RowBox[{"ImageSize", "\[Rule]", "1000"}], ",", 
+      RowBox[{"AspectRatio", "\[Rule]", 
+       RowBox[{"5", "/", "23"}]}]}], "]"}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"Temp", ",", "0.2", ",", "\"\<Temperature\>\""}], "}"}], ",", 
+     "0.2", ",", "3", ",", "0.1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"pop", ",", "100", ",", "\"\<Population\>\""}], "}"}], ",", "1",
+      ",", "1000", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "LEPNumStates", ",", "1", ",", 
+       "\"\<# states in low temperature phase\>\""}], "}"}], ",", "1", ",", 
+     "22", ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "HEPNumStates", ",", "25", ",", 
+       "\"\<# states in high temperature phase\>\""}], "}"}], ",", "1", ",", 
+     "1000", ",", "25"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"deltaEnergy", ",", "2", ",", "\"\<Delta Energy\>\""}], "}"}], 
+     ",", "0", ",", "5"}], "}"}], ",", 
+   RowBox[{"Button", "[", 
+    RowBox[{"\"\<Reset\>\"", ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"pop", "=", "100"}], ",", 
+       RowBox[{"Temp", "=", "0.2"}], ",", 
+       RowBox[{"LEPNumStates", "=", "1"}], ",", 
+       RowBox[{"HEPNumStates", "=", "25"}], ",", 
+       RowBox[{"deltaEnergy", "=", "2"}]}], "}"}]}], "]"}], ",", 
+   RowBox[{"FrameLabel", " ", "\[Rule]", " ", "\"\<Figure 3\>\""}]}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.6114286740855103`*^9, 3.6114286949221487`*^9}, {
+   3.6114291137767773`*^9, 3.6114291415317855`*^9}, {3.611429171651873*^9, 
+   3.6114292203850555`*^9}, {3.611429299999734*^9, 3.6114293004190135`*^9}, 
+   3.61142936709138*^9, 3.61142940581507*^9, {3.6114294456800423`*^9, 
+   3.6114294631065035`*^9}, {3.6114295080765753`*^9, 3.611429529825061*^9}, {
+   3.6114295680354843`*^9, 3.6114295911078463`*^9}, {3.611429645821972*^9, 
+   3.611429652834667*^9}, {3.6114297015580425`*^9, 3.611429702279105*^9}, {
+   3.611429821739813*^9, 3.6114298218108587`*^9}, {3.6114299553015814`*^9, 
+   3.6114300446494694`*^9}, {3.6114300821001434`*^9, 3.611430111170375*^9}, {
+   3.611430162838602*^9, 3.6114301768856773`*^9}, {3.61143034771336*^9, 
+   3.611430411080372*^9}, {3.6114304653516607`*^9, 3.61143054177575*^9}, {
+   3.6114306145172315`*^9, 3.6114306160123262`*^9}}],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`deltaEnergy$$ = 
+    2, $CellContext`HEPNumStates$$ = 25, $CellContext`LEPNumStates$$ = 
+    1, $CellContext`pop$$ = 100, $CellContext`Temp$$ = 0.2, Typeset`show$$ = 
+    True, Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`Temp$$], 0.2, "Temperature"}, 0.2, 3, 0.1}, {{
+       Hold[$CellContext`pop$$], 100, "Population"}, 1, 1000, 1}, {{
+       Hold[$CellContext`LEPNumStates$$], 1, 
+       "# states in low temperature phase"}, 1, 22, 1}, {{
+       Hold[$CellContext`HEPNumStates$$], 25, 
+       "# states in high temperature phase"}, 1, 1000, 25}, {{
+       Hold[$CellContext`deltaEnergy$$], 2, "Delta Energy"}, 0, 5}, {
+      Hold[
+       Button[
+       "Reset", {$CellContext`pop$$ = 100, $CellContext`Temp$$ = 
+         0.2, $CellContext`LEPNumStates$$ = 1, $CellContext`HEPNumStates$$ = 
+         25, $CellContext`deltaEnergy$$ = 2}]], 
+      Manipulate`Dump`ThisIsNotAControl}}, Typeset`size$$ = {
+    1000., {117., 120.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`Temp$597271$$ = 
+    0, $CellContext`pop$597272$$ = 0, $CellContext`LEPNumStates$597273$$ = 
+    0, $CellContext`HEPNumStates$597274$$ = 
+    0, $CellContext`deltaEnergy$597275$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`deltaEnergy$$ = 
+        2, $CellContext`HEPNumStates$$ = 25, $CellContext`LEPNumStates$$ = 
+        1, $CellContext`pop$$ = 100, $CellContext`Temp$$ = 0.2}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`Temp$$, $CellContext`Temp$597271$$, 0], 
+        Hold[$CellContext`pop$$, $CellContext`pop$597272$$, 0], 
+        Hold[$CellContext`LEPNumStates$$, $CellContext`LEPNumStates$597273$$, 
+         0], 
+        Hold[$CellContext`HEPNumStates$$, $CellContext`HEPNumStates$597274$$, 
+         0], 
+        Hold[$CellContext`deltaEnergy$$, $CellContext`deltaEnergy$597275$$, 
+         0]}, "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, 
+      "Body" :> ($CellContext`kb = 1; $CellContext`\[Beta] = 
+        1/($CellContext`kb $CellContext`Temp$$); $CellContext`totalStates = \
+$CellContext`LEPNumStates$$ + $CellContext`HEPNumStates$$; \
+$CellContext`stateVector = 
+        Table[$CellContext`i, {$CellContext`i, 
+           1, $CellContext`totalStates}]; $CellContext`energy = 
+        UnitStep[$CellContext`stateVector - $CellContext`LEPNumStates$$ - 
+           1] $CellContext`deltaEnergy$$; $CellContext`partition = Total[
+          
+          Exp[(-$CellContext`\[Beta]) $CellContext`energy]]; \
+$CellContext`relativeProb = 
+        Exp[(-$CellContext`\[Beta]) $CellContext`energy]; \
+$CellContext`probability = 
+        N[$CellContext`relativeProb/$CellContext`partition]; \
+$CellContext`acuumProb = 
+        Accumulate[$CellContext`probability]; $CellContext`popRandVector = 
+        Table[
+          
+          RandomReal[], {$CellContext`i, 
+           1, $CellContext`pop$$}]; $CellContext`moleculeDist = Table[
+          Max[
+           Flatten[
+            Position[
+             Join[{0}, $CellContext`acuumProb], 
+             PatternTest[
+              Blank[], # < 
+              Part[$CellContext`popRandVector, $CellContext`i]& ]]]], \
+{$CellContext`i, 1, $CellContext`pop$$}]; $CellContext`hist = Table[
+          
+          Count[$CellContext`moleculeDist, $CellContext`i], {$CellContext`i, 
+           1, 
+           Max[$CellContext`moleculeDist]}]; $CellContext`particles = 
+        N[Flatten[
+            Table[
+             
+             Table[$CellContext`i + (1/
+                Part[$CellContext`hist, $CellContext`i]) $CellContext`j, \
+{$CellContext`j, 1, 
+               Part[$CellContext`hist, $CellContext`i]}], {$CellContext`i, 1, 
+              Length[$CellContext`hist]}]] - 1]; Graphics[{
+          
+          Text[$CellContext`LT $CellContext`Phase, \
+{$CellContext`LEPNumStates$$ - 0.5, 1.5}], 
+          
+          Text[$CellContext`HT $CellContext`Phase, \
+{$CellContext`LEPNumStates$$ + 0.6, 1.5}], Black, Dashed, 
+          
+          Line[{{$CellContext`LEPNumStates$$, 
+             0}, {$CellContext`LEPNumStates$$, 5}}], 
+          Table[
+           Disk[{
+             
+             Part[$CellContext`particles, $CellContext`i], \
+$CellContext`deltaEnergy$$ 
+             UnitStep[
+              Part[$CellContext`particles, $CellContext`i] - \
+$CellContext`LEPNumStates$$ - 0.01]}, {
+            0.1 ($CellContext`totalStates/25), 0.1}], {$CellContext`i, 
+            1, $CellContext`pop$$}], 
+          Text[
+           Style[
+            StringJoin["Temperature ", 
+             ToString[$CellContext`Temp$$]], Large, Red, TextAlignment -> 
+            Left], {2 ($CellContext`totalStates/25), 4.5}, {-1, 0}], 
+          Text[
+           Style[
+            StringJoin["Population ", 
+             ToString[$CellContext`pop$$]], Large, Purple, TextAlignment -> 
+            Left], {2 ($CellContext`totalStates/25), 4}, {-1, 0}], 
+          Text[
+           Style[
+            StringJoin["Low Temp Phase ", 
+             ToString[
+              Round[
+               N[100 (Length[
+                   
+                   Select[$CellContext`particles, # < \
+$CellContext`LEPNumStates$$& ]]/Length[$CellContext`particles])]]], "%"], 
+            Large, Blue], {7 ($CellContext`totalStates/25), 4}, {-1, 0}], 
+          Text[
+           Style[
+            StringJoin["High Temp Phase ", 
+             ToString[
+              Round[
+               N[100 (Length[
+                   
+                   Select[$CellContext`particles, # >= \
+$CellContext`LEPNumStates$$& ]]/Length[$CellContext`particles])]]], "%"], 
+            Large, Blue], {7 ($CellContext`totalStates/25), 4.5}, {-1, 0}], 
+          Text[
+           Style[
+            StringJoin["G of LT ", 
+             ToString[
+              NumberForm[
+               N[0 - $CellContext`Temp$$ Log[$CellContext`LEPNumStates$$]], {
+               3, 3}]]], Large, Gray], {
+           20 ($CellContext`totalStates/25), 4.8}, {-1, 1}], 
+          Text[
+           Style[
+            StringJoin["G of HT ", 
+             ToString[
+              NumberForm[
+               
+               N[$CellContext`deltaEnergy$$ - $CellContext`Temp$$ 
+                Log[$CellContext`HEPNumStates$$]], {3, 3}]]], Large, Gray], {
+           20 ($CellContext`totalStates/25), 4.}, {-1, 1}], 
+          Text[
+           Style[
+            StringJoin["Relative probability\n of the high energy states\n ", 
+             ToString[
+              NumberForm[
+               N[
+                Exp[(-$CellContext`\[Beta]) $CellContext`deltaEnergy$$]], {8, 
+               8}]]], Large, Orange], {
+           13 ($CellContext`totalStates/25), 4.8}, {-1, 1}]}, 
+         PlotRange -> {{0, $CellContext`totalStates}, {0, 5}}, Frame -> True, 
+         ImageSize -> 1000, AspectRatio -> 5/23]), 
+      "Specifications" :> {{{$CellContext`Temp$$, 0.2, "Temperature"}, 0.2, 3,
+          0.1}, {{$CellContext`pop$$, 100, "Population"}, 1, 1000, 
+         1}, {{$CellContext`LEPNumStates$$, 1, 
+          "# states in low temperature phase"}, 1, 22, 
+         1}, {{$CellContext`HEPNumStates$$, 25, 
+          "# states in high temperature phase"}, 1, 1000, 
+         25}, {{$CellContext`deltaEnergy$$, 2, "Delta Energy"}, 0, 5}, 
+        Button[
+        "Reset", {$CellContext`pop$$ = 100, $CellContext`Temp$$ = 
+          0.2, $CellContext`LEPNumStates$$ = 1, $CellContext`HEPNumStates$$ = 
+          25, $CellContext`deltaEnergy$$ = 2}]}, 
+      "Options" :> {FrameLabel -> "Figure 3"}, 
+      "DefaultOptions" :> {ControllerLinking -> True}],
+     ImageSizeCache->{1049., {239., 244.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{3.611430566329398*^9, 3.611430616745819*^9},
+ CellID->359203901]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.611430129389804*^9, 3.6114301334755363`*^9}},
+ CellID->133578715],
+
+Cell[BoxData[
+ SubscriptBox["\[Placeholder]", "\[Placeholder]"]], "Input",
+ CellChangeTimes->{3.611429736081664*^9},
+ CellID->69999300],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.611429675188567*^9, 3.6114296777892976`*^9}},
+ CellID->42910845]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "ManipulateCaptionSection"],
+
+Cell[TextData[{
+ "A model two phase system to demonstrate the Gibbs Free Energy.   A \
+population of particles is is allocated to the states available according to ",
+ Cell[BoxData[
+  RowBox[{"P", " ", "=", " ", 
+   FractionBox[
+    SuperscriptBox["e", 
+     FractionBox[
+      RowBox[{"-", 
+       SubscriptBox["E", "x"]}], 
+      RowBox[{
+       SubscriptBox["K", "b"], "T"}]]], "Z"]}]],
+  CellChangeTimes->{{3.599867722464842*^9, 3.5998677709325747`*^9}, {
+   3.599867864012355*^9, 3.599867959036804*^9}, {3.599868604910145*^9, 
+   3.59986868444604*^9}, {3.5998687304968185`*^9, 3.5998687846161604`*^9}, {
+   3.611167264795045*^9, 3.6111672693430815`*^9}},
+  FontSize->18],
+ " where Z is the partition function, E is the energy of the state, and T is \
+the temperature.   The number of states in each phase can be changed as well \
+as the temperature, the energy difference between the two phases, and the \
+population.   At low temperature, one can see the system condense to the low \
+temperature phase.   At higher temperature, the population begins to \
+evaporate to the high temperature phase as the importance of the entropy \
+begins to dominate.   In all cases, the system prefers to occupy the phase of \
+lowest Gibbs Free Energy."
+}], "ManipulateCaption",
+ CellChangeTimes->{{3.6114287356435833`*^9, 3.6114287590812693`*^9}, {
+  3.6114288488002367`*^9, 3.611429019394638*^9}, {3.6114306698861504`*^9, 
+  3.611430806139199*^9}, {3.6114320582152967`*^9, 3.6114320776859317`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "ThumbnailSection"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["   "], "Input",
+ CellChangeTimes->{{3.6114306665163765`*^9, 3.6114306668296137`*^9}},
+ CellID->144205357],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`deltaEnergy$$ = 
+    1.72, $CellContext`HEPNumStates$$ = 25, $CellContext`LEPNumStates$$ = 
+    1, $CellContext`pop$$ = 100, $CellContext`Temp$$ = 0.30000000000000004`, 
+    Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`Temp$$], 0.2, "Temperature"}, 0.2, 3, 0.1}, {{
+       Hold[$CellContext`pop$$], 100, "Population"}, 1, 1000, 1}, {{
+       Hold[$CellContext`LEPNumStates$$], 1, 
+       "# states in low temperature phase"}, 1, 22, 1}, {{
+       Hold[$CellContext`HEPNumStates$$], 25, 
+       "# states in high temperature phase"}, 1, 1000, 25}, {{
+       Hold[$CellContext`deltaEnergy$$], 2, "Delta Energy"}, 0, 5}, {
+      Hold[
+       Button[
+       "Reset", {$CellContext`pop$$ = 100, $CellContext`Temp$$ = 
+         0.2, $CellContext`LEPNumStates$$ = 1, $CellContext`HEPNumStates$$ = 
+         25, $CellContext`deltaEnergy$$ = 2}]], 
+      Manipulate`Dump`ThisIsNotAControl}}, Typeset`size$$ = {
+    1000., {117., 120.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`Temp$597271$$ = 
+    0, $CellContext`pop$597272$$ = 0, $CellContext`LEPNumStates$597273$$ = 
+    0, $CellContext`HEPNumStates$597274$$ = 
+    0, $CellContext`deltaEnergy$597275$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`deltaEnergy$$ = 
+        2, $CellContext`HEPNumStates$$ = 25, $CellContext`LEPNumStates$$ = 
+        1, $CellContext`pop$$ = 100, $CellContext`Temp$$ = 0.2}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`Temp$$, $CellContext`Temp$597271$$, 0], 
+        Hold[$CellContext`pop$$, $CellContext`pop$597272$$, 0], 
+        Hold[$CellContext`LEPNumStates$$, $CellContext`LEPNumStates$597273$$, 
+         0], 
+        Hold[$CellContext`HEPNumStates$$, $CellContext`HEPNumStates$597274$$, 
+         0], 
+        Hold[$CellContext`deltaEnergy$$, $CellContext`deltaEnergy$597275$$, 
+         0]}, "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, 
+      "Body" :> ($CellContext`kb = 1; $CellContext`\[Beta] = 
+        1/($CellContext`kb $CellContext`Temp$$); $CellContext`totalStates = \
+$CellContext`LEPNumStates$$ + $CellContext`HEPNumStates$$; \
+$CellContext`stateVector = 
+        Table[$CellContext`i, {$CellContext`i, 
+           1, $CellContext`totalStates}]; $CellContext`energy = 
+        UnitStep[$CellContext`stateVector - $CellContext`LEPNumStates$$ - 
+           1] $CellContext`deltaEnergy$$; $CellContext`partition = Total[
+          
+          Exp[(-$CellContext`\[Beta]) $CellContext`energy]]; \
+$CellContext`relativeProb = 
+        Exp[(-$CellContext`\[Beta]) $CellContext`energy]; \
+$CellContext`probability = 
+        N[$CellContext`relativeProb/$CellContext`partition]; \
+$CellContext`acuumProb = 
+        Accumulate[$CellContext`probability]; $CellContext`popRandVector = 
+        Table[
+          
+          RandomReal[], {$CellContext`i, 
+           1, $CellContext`pop$$}]; $CellContext`moleculeDist = Table[
+          Max[
+           Flatten[
+            Position[
+             Join[{0}, $CellContext`acuumProb], 
+             PatternTest[
+              Blank[], # < 
+              Part[$CellContext`popRandVector, $CellContext`i]& ]]]], \
+{$CellContext`i, 1, $CellContext`pop$$}]; $CellContext`hist = Table[
+          
+          Count[$CellContext`moleculeDist, $CellContext`i], {$CellContext`i, 
+           1, 
+           Max[$CellContext`moleculeDist]}]; $CellContext`particles = 
+        N[Flatten[
+            Table[
+             
+             Table[$CellContext`i + (1/
+                Part[$CellContext`hist, $CellContext`i]) $CellContext`j, \
+{$CellContext`j, 1, 
+               Part[$CellContext`hist, $CellContext`i]}], {$CellContext`i, 1, 
+              Length[$CellContext`hist]}]] - 1]; Graphics[{
+          
+          Text[$CellContext`LT $CellContext`Phase, \
+{$CellContext`LEPNumStates$$ - 0.5, 1.5}], 
+          
+          Text[$CellContext`HT $CellContext`Phase, \
+{$CellContext`LEPNumStates$$ + 0.6, 1.5}], Black, Dashed, 
+          
+          Line[{{$CellContext`LEPNumStates$$, 
+             0}, {$CellContext`LEPNumStates$$, 5}}], 
+          Table[
+           Disk[{
+             
+             Part[$CellContext`particles, $CellContext`i], \
+$CellContext`deltaEnergy$$ 
+             UnitStep[
+              Part[$CellContext`particles, $CellContext`i] - \
+$CellContext`LEPNumStates$$ - 0.01]}, {
+            0.1 ($CellContext`totalStates/25), 0.1}], {$CellContext`i, 
+            1, $CellContext`pop$$}], 
+          Text[
+           Style[
+            StringJoin["Temperature ", 
+             ToString[$CellContext`Temp$$]], Large, Red, TextAlignment -> 
+            Left], {2 ($CellContext`totalStates/25), 4.5}, {-1, 0}], 
+          Text[
+           Style[
+            StringJoin["Population ", 
+             ToString[$CellContext`pop$$]], Large, Purple, TextAlignment -> 
+            Left], {2 ($CellContext`totalStates/25), 4}, {-1, 0}], 
+          Text[
+           Style[
+            StringJoin["Low Temp Phase ", 
+             ToString[
+              Round[
+               N[100 (Length[
+                   
+                   Select[$CellContext`particles, # < \
+$CellContext`LEPNumStates$$& ]]/Length[$CellContext`particles])]]], "%"], 
+            Large, Blue], {7 ($CellContext`totalStates/25), 4}, {-1, 0}], 
+          Text[
+           Style[
+            StringJoin["High Temp Phase ", 
+             ToString[
+              Round[
+               N[100 (Length[
+                   
+                   Select[$CellContext`particles, # >= \
+$CellContext`LEPNumStates$$& ]]/Length[$CellContext`particles])]]], "%"], 
+            Large, Blue], {7 ($CellContext`totalStates/25), 4.5}, {-1, 0}], 
+          Text[
+           Style[
+            StringJoin["G of LT ", 
+             ToString[
+              NumberForm[
+               N[0 - $CellContext`Temp$$ Log[$CellContext`LEPNumStates$$]], {
+               3, 3}]]], Large, Gray], {
+           20 ($CellContext`totalStates/25), 4.8}, {-1, 1}], 
+          Text[
+           Style[
+            StringJoin["G of HT ", 
+             ToString[
+              NumberForm[
+               
+               N[$CellContext`deltaEnergy$$ - $CellContext`Temp$$ 
+                Log[$CellContext`HEPNumStates$$]], {3, 3}]]], Large, Gray], {
+           20 ($CellContext`totalStates/25), 4.}, {-1, 1}], 
+          Text[
+           Style[
+            StringJoin["Relative probability\n of the high energy states\n ", 
+             ToString[
+              NumberForm[
+               N[
+                Exp[(-$CellContext`\[Beta]) $CellContext`deltaEnergy$$]], {8, 
+               8}]]], Large, Orange], {
+           13 ($CellContext`totalStates/25), 4.8}, {-1, 1}]}, 
+         PlotRange -> {{0, $CellContext`totalStates}, {0, 5}}, Frame -> True, 
+         ImageSize -> 1000, AspectRatio -> 5/23]), 
+      "Specifications" :> {{{$CellContext`Temp$$, 0.2, "Temperature"}, 0.2, 3,
+          0.1}, {{$CellContext`pop$$, 100, "Population"}, 1, 1000, 
+         1}, {{$CellContext`LEPNumStates$$, 1, 
+          "# states in low temperature phase"}, 1, 22, 
+         1}, {{$CellContext`HEPNumStates$$, 25, 
+          "# states in high temperature phase"}, 1, 1000, 
+         25}, {{$CellContext`deltaEnergy$$, 2, "Delta Energy"}, 0, 5}, 
+        Button[
+        "Reset", {$CellContext`pop$$ = 100, $CellContext`Temp$$ = 
+          0.2, $CellContext`LEPNumStates$$ = 1, $CellContext`HEPNumStates$$ = 
+          25, $CellContext`deltaEnergy$$ = 2}]}, 
+      "Options" :> {FrameLabel -> "Figure 3"}, 
+      "DefaultOptions" :> {ControllerLinking -> True}],
+     ImageSizeCache->{1049., {239., 244.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellEditDuplicate->False,
+ GeneratedCell->False,
+ CellAutoOverwrite->False,
+ CellChangeTimes->{3.6114308379536986`*^9}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "SnapshotsSection"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`deltaEnergy$$ = 
+    2, $CellContext`HEPNumStates$$ = 25, $CellContext`LEPNumStates$$ = 
+    1, $CellContext`pop$$ = 100, $CellContext`Temp$$ = 0.2, Typeset`show$$ = 
+    True, Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`Temp$$], 0.2, "Temperature"}, 0.2, 3, 0.1}, {{
+       Hold[$CellContext`pop$$], 100, "Population"}, 1, 1000, 1}, {{
+       Hold[$CellContext`LEPNumStates$$], 1, 
+       "# states in low temperature phase"}, 1, 22, 1}, {{
+       Hold[$CellContext`HEPNumStates$$], 25, 
+       "# states in high temperature phase"}, 1, 1000, 25}, {{
+       Hold[$CellContext`deltaEnergy$$], 2, "Delta Energy"}, 0, 5}, {
+      Hold[
+       Button[
+       "Reset", {$CellContext`pop$$ = 100, $CellContext`Temp$$ = 
+         0.2, $CellContext`LEPNumStates$$ = 1, $CellContext`HEPNumStates$$ = 
+         25, $CellContext`deltaEnergy$$ = 2}]], 
+      Manipulate`Dump`ThisIsNotAControl}}, Typeset`size$$ = {
+    1000., {117., 120.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`Temp$597271$$ = 
+    0, $CellContext`pop$597272$$ = 0, $CellContext`LEPNumStates$597273$$ = 
+    0, $CellContext`HEPNumStates$597274$$ = 
+    0, $CellContext`deltaEnergy$597275$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`deltaEnergy$$ = 
+        2, $CellContext`HEPNumStates$$ = 25, $CellContext`LEPNumStates$$ = 
+        1, $CellContext`pop$$ = 100, $CellContext`Temp$$ = 0.2}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`Temp$$, $CellContext`Temp$597271$$, 0], 
+        Hold[$CellContext`pop$$, $CellContext`pop$597272$$, 0], 
+        Hold[$CellContext`LEPNumStates$$, $CellContext`LEPNumStates$597273$$, 
+         0], 
+        Hold[$CellContext`HEPNumStates$$, $CellContext`HEPNumStates$597274$$, 
+         0], 
+        Hold[$CellContext`deltaEnergy$$, $CellContext`deltaEnergy$597275$$, 
+         0]}, "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, 
+      "Body" :> ($CellContext`kb = 1; $CellContext`\[Beta] = 
+        1/($CellContext`kb $CellContext`Temp$$); $CellContext`totalStates = \
+$CellContext`LEPNumStates$$ + $CellContext`HEPNumStates$$; \
+$CellContext`stateVector = 
+        Table[$CellContext`i, {$CellContext`i, 
+           1, $CellContext`totalStates}]; $CellContext`energy = 
+        UnitStep[$CellContext`stateVector - $CellContext`LEPNumStates$$ - 
+           1] $CellContext`deltaEnergy$$; $CellContext`partition = Total[
+          
+          Exp[(-$CellContext`\[Beta]) $CellContext`energy]]; \
+$CellContext`relativeProb = 
+        Exp[(-$CellContext`\[Beta]) $CellContext`energy]; \
+$CellContext`probability = 
+        N[$CellContext`relativeProb/$CellContext`partition]; \
+$CellContext`acuumProb = 
+        Accumulate[$CellContext`probability]; $CellContext`popRandVector = 
+        Table[
+          
+          RandomReal[], {$CellContext`i, 
+           1, $CellContext`pop$$}]; $CellContext`moleculeDist = Table[
+          Max[
+           Flatten[
+            Position[
+             Join[{0}, $CellContext`acuumProb], 
+             PatternTest[
+              Blank[], # < 
+              Part[$CellContext`popRandVector, $CellContext`i]& ]]]], \
+{$CellContext`i, 1, $CellContext`pop$$}]; $CellContext`hist = Table[
+          
+          Count[$CellContext`moleculeDist, $CellContext`i], {$CellContext`i, 
+           1, 
+           Max[$CellContext`moleculeDist]}]; $CellContext`particles = 
+        N[Flatten[
+            Table[
+             
+             Table[$CellContext`i + (1/
+                Part[$CellContext`hist, $CellContext`i]) $CellContext`j, \
+{$CellContext`j, 1, 
+               Part[$CellContext`hist, $CellContext`i]}], {$CellContext`i, 1, 
+              Length[$CellContext`hist]}]] - 1]; Graphics[{
+          
+          Text[$CellContext`LT $CellContext`Phase, \
+{$CellContext`LEPNumStates$$ - 0.5, 1.5}], 
+          
+          Text[$CellContext`HT $CellContext`Phase, \
+{$CellContext`LEPNumStates$$ + 0.6, 1.5}], Black, Dashed, 
+          
+          Line[{{$CellContext`LEPNumStates$$, 
+             0}, {$CellContext`LEPNumStates$$, 5}}], 
+          Table[
+           Disk[{
+             
+             Part[$CellContext`particles, $CellContext`i], \
+$CellContext`deltaEnergy$$ 
+             UnitStep[
+              Part[$CellContext`particles, $CellContext`i] - \
+$CellContext`LEPNumStates$$ - 0.01]}, {
+            0.1 ($CellContext`totalStates/25), 0.1}], {$CellContext`i, 
+            1, $CellContext`pop$$}], 
+          Text[
+           Style[
+            StringJoin["Temperature ", 
+             ToString[$CellContext`Temp$$]], Large, Red, TextAlignment -> 
+            Left], {2 ($CellContext`totalStates/25), 4.5}, {-1, 0}], 
+          Text[
+           Style[
+            StringJoin["Population ", 
+             ToString[$CellContext`pop$$]], Large, Purple, TextAlignment -> 
+            Left], {2 ($CellContext`totalStates/25), 4}, {-1, 0}], 
+          Text[
+           Style[
+            StringJoin["Low Temp Phase ", 
+             ToString[
+              Round[
+               N[100 (Length[
+                   
+                   Select[$CellContext`particles, # < \
+$CellContext`LEPNumStates$$& ]]/Length[$CellContext`particles])]]], "%"], 
+            Large, Blue], {7 ($CellContext`totalStates/25), 4}, {-1, 0}], 
+          Text[
+           Style[
+            StringJoin["High Temp Phase ", 
+             ToString[
+              Round[
+               N[100 (Length[
+                   
+                   Select[$CellContext`particles, # >= \
+$CellContext`LEPNumStates$$& ]]/Length[$CellContext`particles])]]], "%"], 
+            Large, Blue], {7 ($CellContext`totalStates/25), 4.5}, {-1, 0}], 
+          Text[
+           Style[
+            StringJoin["G of LT ", 
+             ToString[
+              NumberForm[
+               N[0 - $CellContext`Temp$$ Log[$CellContext`LEPNumStates$$]], {
+               3, 3}]]], Large, Gray], {
+           20 ($CellContext`totalStates/25), 4.8}, {-1, 1}], 
+          Text[
+           Style[
+            StringJoin["G of HT ", 
+             ToString[
+              NumberForm[
+               
+               N[$CellContext`deltaEnergy$$ - $CellContext`Temp$$ 
+                Log[$CellContext`HEPNumStates$$]], {3, 3}]]], Large, Gray], {
+           20 ($CellContext`totalStates/25), 4.}, {-1, 1}], 
+          Text[
+           Style[
+            StringJoin["Relative probability\n of the high energy states\n ", 
+             ToString[
+              NumberForm[
+               N[
+                Exp[(-$CellContext`\[Beta]) $CellContext`deltaEnergy$$]], {8, 
+               8}]]], Large, Orange], {
+           13 ($CellContext`totalStates/25), 4.8}, {-1, 1}]}, 
+         PlotRange -> {{0, $CellContext`totalStates}, {0, 5}}, Frame -> True, 
+         ImageSize -> 1000, AspectRatio -> 5/23]), 
+      "Specifications" :> {{{$CellContext`Temp$$, 0.2, "Temperature"}, 0.2, 3,
+          0.1}, {{$CellContext`pop$$, 100, "Population"}, 1, 1000, 
+         1}, {{$CellContext`LEPNumStates$$, 1, 
+          "# states in low temperature phase"}, 1, 22, 
+         1}, {{$CellContext`HEPNumStates$$, 25, 
+          "# states in high temperature phase"}, 1, 1000, 
+         25}, {{$CellContext`deltaEnergy$$, 2, "Delta Energy"}, 0, 5}, 
+        Button[
+        "Reset", {$CellContext`pop$$ = 100, $CellContext`Temp$$ = 
+          0.2, $CellContext`LEPNumStates$$ = 1, $CellContext`HEPNumStates$$ = 
+          25, $CellContext`deltaEnergy$$ = 2}]}, 
+      "Options" :> {FrameLabel -> "Figure 3"}, 
+      "DefaultOptions" :> {ControllerLinking -> True}],
+     ImageSizeCache->{1049., {239., 244.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellEditDuplicate->False,
+ GeneratedCell->False,
+ CellAutoOverwrite->False,
+ CellChangeTimes->{3.611430870426642*^9}],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`deltaEnergy$$ = 
+    2, $CellContext`HEPNumStates$$ = 25, $CellContext`LEPNumStates$$ = 
+    1, $CellContext`pop$$ = 100, $CellContext`Temp$$ = 3., Typeset`show$$ = 
+    True, Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`Temp$$], 0.2, "Temperature"}, 0.2, 3, 0.1}, {{
+       Hold[$CellContext`pop$$], 100, "Population"}, 1, 1000, 1}, {{
+       Hold[$CellContext`LEPNumStates$$], 1, 
+       "# states in low temperature phase"}, 1, 22, 1}, {{
+       Hold[$CellContext`HEPNumStates$$], 25, 
+       "# states in high temperature phase"}, 1, 1000, 25}, {{
+       Hold[$CellContext`deltaEnergy$$], 2, "Delta Energy"}, 0, 5}, {
+      Hold[
+       Button[
+       "Reset", {$CellContext`pop$$ = 100, $CellContext`Temp$$ = 
+         0.2, $CellContext`LEPNumStates$$ = 1, $CellContext`HEPNumStates$$ = 
+         25, $CellContext`deltaEnergy$$ = 2}]], 
+      Manipulate`Dump`ThisIsNotAControl}}, Typeset`size$$ = {
+    1000., {117., 120.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`Temp$597271$$ = 
+    0, $CellContext`pop$597272$$ = 0, $CellContext`LEPNumStates$597273$$ = 
+    0, $CellContext`HEPNumStates$597274$$ = 
+    0, $CellContext`deltaEnergy$597275$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`deltaEnergy$$ = 
+        2, $CellContext`HEPNumStates$$ = 25, $CellContext`LEPNumStates$$ = 
+        1, $CellContext`pop$$ = 100, $CellContext`Temp$$ = 0.2}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`Temp$$, $CellContext`Temp$597271$$, 0], 
+        Hold[$CellContext`pop$$, $CellContext`pop$597272$$, 0], 
+        Hold[$CellContext`LEPNumStates$$, $CellContext`LEPNumStates$597273$$, 
+         0], 
+        Hold[$CellContext`HEPNumStates$$, $CellContext`HEPNumStates$597274$$, 
+         0], 
+        Hold[$CellContext`deltaEnergy$$, $CellContext`deltaEnergy$597275$$, 
+         0]}, "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, 
+      "Body" :> ($CellContext`kb = 1; $CellContext`\[Beta] = 
+        1/($CellContext`kb $CellContext`Temp$$); $CellContext`totalStates = \
+$CellContext`LEPNumStates$$ + $CellContext`HEPNumStates$$; \
+$CellContext`stateVector = 
+        Table[$CellContext`i, {$CellContext`i, 
+           1, $CellContext`totalStates}]; $CellContext`energy = 
+        UnitStep[$CellContext`stateVector - $CellContext`LEPNumStates$$ - 
+           1] $CellContext`deltaEnergy$$; $CellContext`partition = Total[
+          
+          Exp[(-$CellContext`\[Beta]) $CellContext`energy]]; \
+$CellContext`relativeProb = 
+        Exp[(-$CellContext`\[Beta]) $CellContext`energy]; \
+$CellContext`probability = 
+        N[$CellContext`relativeProb/$CellContext`partition]; \
+$CellContext`acuumProb = 
+        Accumulate[$CellContext`probability]; $CellContext`popRandVector = 
+        Table[
+          
+          RandomReal[], {$CellContext`i, 
+           1, $CellContext`pop$$}]; $CellContext`moleculeDist = Table[
+          Max[
+           Flatten[
+            Position[
+             Join[{0}, $CellContext`acuumProb], 
+             PatternTest[
+              Blank[], # < 
+              Part[$CellContext`popRandVector, $CellContext`i]& ]]]], \
+{$CellContext`i, 1, $CellContext`pop$$}]; $CellContext`hist = Table[
+          
+          Count[$CellContext`moleculeDist, $CellContext`i], {$CellContext`i, 
+           1, 
+           Max[$CellContext`moleculeDist]}]; $CellContext`particles = 
+        N[Flatten[
+            Table[
+             
+             Table[$CellContext`i + (1/
+                Part[$CellContext`hist, $CellContext`i]) $CellContext`j, \
+{$CellContext`j, 1, 
+               Part[$CellContext`hist, $CellContext`i]}], {$CellContext`i, 1, 
+              Length[$CellContext`hist]}]] - 1]; Graphics[{
+          
+          Text[$CellContext`LT $CellContext`Phase, \
+{$CellContext`LEPNumStates$$ - 0.5, 1.5}], 
+          
+          Text[$CellContext`HT $CellContext`Phase, \
+{$CellContext`LEPNumStates$$ + 0.6, 1.5}], Black, Dashed, 
+          
+          Line[{{$CellContext`LEPNumStates$$, 
+             0}, {$CellContext`LEPNumStates$$, 5}}], 
+          Table[
+           Disk[{
+             
+             Part[$CellContext`particles, $CellContext`i], \
+$CellContext`deltaEnergy$$ 
+             UnitStep[
+              Part[$CellContext`particles, $CellContext`i] - \
+$CellContext`LEPNumStates$$ - 0.01]}, {
+            0.1 ($CellContext`totalStates/25), 0.1}], {$CellContext`i, 
+            1, $CellContext`pop$$}], 
+          Text[
+           Style[
+            StringJoin["Temperature ", 
+             ToString[$CellContext`Temp$$]], Large, Red, TextAlignment -> 
+            Left], {2 ($CellContext`totalStates/25), 4.5}, {-1, 0}], 
+          Text[
+           Style[
+            StringJoin["Population ", 
+             ToString[$CellContext`pop$$]], Large, Purple, TextAlignment -> 
+            Left], {2 ($CellContext`totalStates/25), 4}, {-1, 0}], 
+          Text[
+           Style[
+            StringJoin["Low Temp Phase ", 
+             ToString[
+              Round[
+               N[100 (Length[
+                   
+                   Select[$CellContext`particles, # < \
+$CellContext`LEPNumStates$$& ]]/Length[$CellContext`particles])]]], "%"], 
+            Large, Blue], {7 ($CellContext`totalStates/25), 4}, {-1, 0}], 
+          Text[
+           Style[
+            StringJoin["High Temp Phase ", 
+             ToString[
+              Round[
+               N[100 (Length[
+                   
+                   Select[$CellContext`particles, # >= \
+$CellContext`LEPNumStates$$& ]]/Length[$CellContext`particles])]]], "%"], 
+            Large, Blue], {7 ($CellContext`totalStates/25), 4.5}, {-1, 0}], 
+          Text[
+           Style[
+            StringJoin["G of LT ", 
+             ToString[
+              NumberForm[
+               N[0 - $CellContext`Temp$$ Log[$CellContext`LEPNumStates$$]], {
+               3, 3}]]], Large, Gray], {
+           20 ($CellContext`totalStates/25), 4.8}, {-1, 1}], 
+          Text[
+           Style[
+            StringJoin["G of HT ", 
+             ToString[
+              NumberForm[
+               
+               N[$CellContext`deltaEnergy$$ - $CellContext`Temp$$ 
+                Log[$CellContext`HEPNumStates$$]], {3, 3}]]], Large, Gray], {
+           20 ($CellContext`totalStates/25), 4.}, {-1, 1}], 
+          Text[
+           Style[
+            StringJoin["Relative probability\n of the high energy states\n ", 
+             ToString[
+              NumberForm[
+               N[
+                Exp[(-$CellContext`\[Beta]) $CellContext`deltaEnergy$$]], {8, 
+               8}]]], Large, Orange], {
+           13 ($CellContext`totalStates/25), 4.8}, {-1, 1}]}, 
+         PlotRange -> {{0, $CellContext`totalStates}, {0, 5}}, Frame -> True, 
+         ImageSize -> 1000, AspectRatio -> 5/23]), 
+      "Specifications" :> {{{$CellContext`Temp$$, 0.2, "Temperature"}, 0.2, 3,
+          0.1}, {{$CellContext`pop$$, 100, "Population"}, 1, 1000, 
+         1}, {{$CellContext`LEPNumStates$$, 1, 
+          "# states in low temperature phase"}, 1, 22, 
+         1}, {{$CellContext`HEPNumStates$$, 25, 
+          "# states in high temperature phase"}, 1, 1000, 
+         25}, {{$CellContext`deltaEnergy$$, 2, "Delta Energy"}, 0, 5}, 
+        Button[
+        "Reset", {$CellContext`pop$$ = 100, $CellContext`Temp$$ = 
+          0.2, $CellContext`LEPNumStates$$ = 1, $CellContext`HEPNumStates$$ = 
+          25, $CellContext`deltaEnergy$$ = 2}]}, 
+      "Options" :> {FrameLabel -> "Figure 3"}, 
+      "DefaultOptions" :> {ControllerLinking -> True}],
+     ImageSizeCache->{1049., {239., 244.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{3.611430566329398*^9, 3.611430616745819*^9},
+ CellID->337000824],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`deltaEnergy$$ = 
+    0.66, $CellContext`HEPNumStates$$ = 25, $CellContext`LEPNumStates$$ = 
+    18, $CellContext`pop$$ = 100, $CellContext`Temp$$ = 0.30000000000000004`, 
+    Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`Temp$$], 0.2, "Temperature"}, 0.2, 3, 0.1}, {{
+       Hold[$CellContext`pop$$], 100, "Population"}, 1, 1000, 1}, {{
+       Hold[$CellContext`LEPNumStates$$], 1, 
+       "# states in low temperature phase"}, 1, 22, 1}, {{
+       Hold[$CellContext`HEPNumStates$$], 25, 
+       "# states in high temperature phase"}, 1, 1000, 25}, {{
+       Hold[$CellContext`deltaEnergy$$], 2, "Delta Energy"}, 0, 5}, {
+      Hold[
+       Button[
+       "Reset", {$CellContext`pop$$ = 100, $CellContext`Temp$$ = 
+         0.2, $CellContext`LEPNumStates$$ = 1, $CellContext`HEPNumStates$$ = 
+         25, $CellContext`deltaEnergy$$ = 2}]], 
+      Manipulate`Dump`ThisIsNotAControl}}, Typeset`size$$ = {
+    1000., {117., 120.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`Temp$597271$$ = 
+    0, $CellContext`pop$597272$$ = 0, $CellContext`LEPNumStates$597273$$ = 
+    0, $CellContext`HEPNumStates$597274$$ = 
+    0, $CellContext`deltaEnergy$597275$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`deltaEnergy$$ = 
+        2, $CellContext`HEPNumStates$$ = 25, $CellContext`LEPNumStates$$ = 
+        1, $CellContext`pop$$ = 100, $CellContext`Temp$$ = 0.2}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`Temp$$, $CellContext`Temp$597271$$, 0], 
+        Hold[$CellContext`pop$$, $CellContext`pop$597272$$, 0], 
+        Hold[$CellContext`LEPNumStates$$, $CellContext`LEPNumStates$597273$$, 
+         0], 
+        Hold[$CellContext`HEPNumStates$$, $CellContext`HEPNumStates$597274$$, 
+         0], 
+        Hold[$CellContext`deltaEnergy$$, $CellContext`deltaEnergy$597275$$, 
+         0]}, "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, 
+      "Body" :> ($CellContext`kb = 1; $CellContext`\[Beta] = 
+        1/($CellContext`kb $CellContext`Temp$$); $CellContext`totalStates = \
+$CellContext`LEPNumStates$$ + $CellContext`HEPNumStates$$; \
+$CellContext`stateVector = 
+        Table[$CellContext`i, {$CellContext`i, 
+           1, $CellContext`totalStates}]; $CellContext`energy = 
+        UnitStep[$CellContext`stateVector - $CellContext`LEPNumStates$$ - 
+           1] $CellContext`deltaEnergy$$; $CellContext`partition = Total[
+          
+          Exp[(-$CellContext`\[Beta]) $CellContext`energy]]; \
+$CellContext`relativeProb = 
+        Exp[(-$CellContext`\[Beta]) $CellContext`energy]; \
+$CellContext`probability = 
+        N[$CellContext`relativeProb/$CellContext`partition]; \
+$CellContext`acuumProb = 
+        Accumulate[$CellContext`probability]; $CellContext`popRandVector = 
+        Table[
+          
+          RandomReal[], {$CellContext`i, 
+           1, $CellContext`pop$$}]; $CellContext`moleculeDist = Table[
+          Max[
+           Flatten[
+            Position[
+             Join[{0}, $CellContext`acuumProb], 
+             PatternTest[
+              Blank[], # < 
+              Part[$CellContext`popRandVector, $CellContext`i]& ]]]], \
+{$CellContext`i, 1, $CellContext`pop$$}]; $CellContext`hist = Table[
+          
+          Count[$CellContext`moleculeDist, $CellContext`i], {$CellContext`i, 
+           1, 
+           Max[$CellContext`moleculeDist]}]; $CellContext`particles = 
+        N[Flatten[
+            Table[
+             
+             Table[$CellContext`i + (1/
+                Part[$CellContext`hist, $CellContext`i]) $CellContext`j, \
+{$CellContext`j, 1, 
+               Part[$CellContext`hist, $CellContext`i]}], {$CellContext`i, 1, 
+              Length[$CellContext`hist]}]] - 1]; Graphics[{
+          
+          Text[$CellContext`LT $CellContext`Phase, \
+{$CellContext`LEPNumStates$$ - 0.5, 1.5}], 
+          
+          Text[$CellContext`HT $CellContext`Phase, \
+{$CellContext`LEPNumStates$$ + 0.6, 1.5}], Black, Dashed, 
+          
+          Line[{{$CellContext`LEPNumStates$$, 
+             0}, {$CellContext`LEPNumStates$$, 5}}], 
+          Table[
+           Disk[{
+             
+             Part[$CellContext`particles, $CellContext`i], \
+$CellContext`deltaEnergy$$ 
+             UnitStep[
+              Part[$CellContext`particles, $CellContext`i] - \
+$CellContext`LEPNumStates$$ - 0.01]}, {
+            0.1 ($CellContext`totalStates/25), 0.1}], {$CellContext`i, 
+            1, $CellContext`pop$$}], 
+          Text[
+           Style[
+            StringJoin["Temperature ", 
+             ToString[$CellContext`Temp$$]], Large, Red, TextAlignment -> 
+            Left], {2 ($CellContext`totalStates/25), 4.5}, {-1, 0}], 
+          Text[
+           Style[
+            StringJoin["Population ", 
+             ToString[$CellContext`pop$$]], Large, Purple, TextAlignment -> 
+            Left], {2 ($CellContext`totalStates/25), 4}, {-1, 0}], 
+          Text[
+           Style[
+            StringJoin["Low Temp Phase ", 
+             ToString[
+              Round[
+               N[100 (Length[
+                   
+                   Select[$CellContext`particles, # < \
+$CellContext`LEPNumStates$$& ]]/Length[$CellContext`particles])]]], "%"], 
+            Large, Blue], {7 ($CellContext`totalStates/25), 4}, {-1, 0}], 
+          Text[
+           Style[
+            StringJoin["High Temp Phase ", 
+             ToString[
+              Round[
+               N[100 (Length[
+                   
+                   Select[$CellContext`particles, # >= \
+$CellContext`LEPNumStates$$& ]]/Length[$CellContext`particles])]]], "%"], 
+            Large, Blue], {7 ($CellContext`totalStates/25), 4.5}, {-1, 0}], 
+          Text[
+           Style[
+            StringJoin["G of LT ", 
+             ToString[
+              NumberForm[
+               N[0 - $CellContext`Temp$$ Log[$CellContext`LEPNumStates$$]], {
+               3, 3}]]], Large, Gray], {
+           20 ($CellContext`totalStates/25), 4.8}, {-1, 1}], 
+          Text[
+           Style[
+            StringJoin["G of HT ", 
+             ToString[
+              NumberForm[
+               
+               N[$CellContext`deltaEnergy$$ - $CellContext`Temp$$ 
+                Log[$CellContext`HEPNumStates$$]], {3, 3}]]], Large, Gray], {
+           20 ($CellContext`totalStates/25), 4.}, {-1, 1}], 
+          Text[
+           Style[
+            StringJoin["Relative probability\n of the high energy states\n ", 
+             ToString[
+              NumberForm[
+               N[
+                Exp[(-$CellContext`\[Beta]) $CellContext`deltaEnergy$$]], {8, 
+               8}]]], Large, Orange], {
+           13 ($CellContext`totalStates/25), 4.8}, {-1, 1}]}, 
+         PlotRange -> {{0, $CellContext`totalStates}, {0, 5}}, Frame -> True, 
+         ImageSize -> 1000, AspectRatio -> 5/23]), 
+      "Specifications" :> {{{$CellContext`Temp$$, 0.2, "Temperature"}, 0.2, 3,
+          0.1}, {{$CellContext`pop$$, 100, "Population"}, 1, 1000, 
+         1}, {{$CellContext`LEPNumStates$$, 1, 
+          "# states in low temperature phase"}, 1, 22, 
+         1}, {{$CellContext`HEPNumStates$$, 25, 
+          "# states in high temperature phase"}, 1, 1000, 
+         25}, {{$CellContext`deltaEnergy$$, 2, "Delta Energy"}, 0, 5}, 
+        Button[
+        "Reset", {$CellContext`pop$$ = 100, $CellContext`Temp$$ = 
+          0.2, $CellContext`LEPNumStates$$ = 1, $CellContext`HEPNumStates$$ = 
+          25, $CellContext`deltaEnergy$$ = 2}]}, 
+      "Options" :> {FrameLabel -> "Figure 3"}, 
+      "DefaultOptions" :> {ControllerLinking -> True}],
+     ImageSizeCache->{1049., {239., 244.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{3.611430566329398*^9, 3.611430616745819*^9},
+ CellID->68636874]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "DetailsSection"],
+
+Cell[TextData[{
+ "We have here a population of particles, which exist in one of any of the \
+allowable states at any time with a relative , or non-normalized probability \
+that is a function of the temperature T, and the energy level ",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["E", "state"], TraditionalForm]]],
+ " of the state.       ",
+ Cell[BoxData[
+  RowBox[{
+   SubscriptBox["P", "state"], "=", 
+   SuperscriptBox["e", 
+    FractionBox[
+     RowBox[{"-", 
+      SubscriptBox["E", "state"]}], 
+     RowBox[{
+      SubscriptBox["K", "b"], "T"}]]]}]],
+  CellChangeTimes->{{3.5998672833016706`*^9, 3.599867328525638*^9}, {
+   3.599868011572707*^9, 3.5998680170933385`*^9}, {3.611167244693988*^9, 
+   3.6111672453351197`*^9}, {3.6114312037386913`*^9, 3.6114312043060694`*^9}},
+  FontSize->24],
+ " .  By non normalized probability,  we mean that if you were to add up P \
+for all of the states, it would not equal one.   This is bad because the \
+particle has to be exactly somewhere.   To normalize,  we divide by the sum \
+of the non normalized probabilities from all of the available states.  We \
+call this sum  the partition function.",
+ Cell[BoxData[
+  RowBox[{"  ", 
+   RowBox[{"Z", " ", "=", " ", 
+    RowBox[{
+     UnderscriptBox["\[Sum]", "States"], 
+     SuperscriptBox["e", 
+      FractionBox[
+       RowBox[{"-", 
+        SubscriptBox["E", "state"]}], 
+       RowBox[{
+        SubscriptBox["K", "b"], "T"}]]], " "}]}]}]],
+  CellChangeTimes->{{3.599867722464842*^9, 3.5998677709325747`*^9}, {
+   3.599867864012355*^9, 3.599867959036804*^9}, {3.6111672483951616`*^9, 
+   3.611167260836396*^9}, {3.6114312141651974`*^9, 3.611431214775759*^9}}],
+ "To calculate the probability that a given particle will be in state X with \
+energy ",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["E", "x"], TraditionalForm]]],
+ " when the temperature is T we write:",
+ Cell[BoxData[
+  RowBox[{"   ", 
+   RowBox[{
+    SubscriptBox["P", "x"], " ", "=", " ", 
+    RowBox[{
+     FractionBox[
+      SuperscriptBox["e", 
+       FractionBox[
+        RowBox[{"-", 
+         SubscriptBox["E", "x"]}], 
+        RowBox[{
+         SubscriptBox["K", "b"], "T"}]]], 
+      RowBox[{
+       UnderscriptBox["\[Sum]", "States"], 
+       SuperscriptBox["e", 
+        FractionBox[
+         RowBox[{"-", 
+          SubscriptBox["E", "state"]}], 
+         RowBox[{
+          SubscriptBox["K", "b"], "T"}]]]}]], "    ", "or", "    ", 
+     FractionBox[
+      SuperscriptBox["e", 
+       FractionBox[
+        RowBox[{"-", 
+         SubscriptBox["E", "x"]}], 
+        RowBox[{
+         SubscriptBox["K", "b"], "T"}]]], "Z"], "  "}]}]}]],
+  CellChangeTimes->{{3.599867722464842*^9, 3.5998677709325747`*^9}, {
+   3.599867864012355*^9, 3.599867959036804*^9}, {3.599868604910145*^9, 
+   3.59986868444604*^9}, {3.5998687304968185`*^9, 3.5998687846161604`*^9}, {
+   3.611167264795045*^9, 3.6111672693430815`*^9}, {3.611431222182926*^9, 
+   3.6114312227463007`*^9}},
+  FontSize->18],
+ ".    The Gibbs Free Energy is G=U-TS.    The \"U\" term is represented by \
+the delta energy in the simulation while the TS term is represented by the \
+number of states in each phase.    Notice that the phase with the smallest \
+Gibbs Free Energy will have the majority of the particles.\n\nThe exercises \
+below are recommended.\n\n1)  ",
+ StyleBox["We begin with the temperature very small, a population of 50 \
+particles.   The two phases are defined by an energy difference of 2.   The \
+low energy phase has only one state, while the high energy phase has 51.   \
+The relative probability for one of the high energy states is 0.00005.   that \
+means that any given particle is 20,000 time more likely to occupy a \
+particular state if that state is in the low energy region than if it is in \
+the high energy region.   In this case, there are 25 high energy states, so \
+the particle has 25 lottery tickets to make it into the high temperature \
+phase, but since the probabilities are so low, it\[CloseCurlyQuote]s not \
+enough.   most likely, right now you see every single particle in the one \
+ground state.  ", "ItemNumbered"],
+ " ",
+ StyleBox["There are two things we can do to increase the chances of a \
+particle occupying the high energy region.    we can increase the relative \
+probabilty for the high energy states, or we can buy the particle more \
+lottery tickets by increasing the number of states in that region.  ", 
+  "ItemNumbered"],
+ "\n",
+ StyleBox[" \n2)   Slowly increase the temperature and watch as more and more \
+particles begin to spill out into the high energy region, just like the bead \
+finding it\[CloseCurlyQuote]s way out of the dip.   We are increasing the \
+probability for higher energy states to be occupied.  We are decreasing the \
+Gibbs Free energy by increasing the TS term.", "ItemNumbered"],
+ "   ",
+ StyleBox["You can accomplish the same thing by decreasing the energy gap.   \
+\n\n3) Set the temperature back to the minimum value, watch the particles \
+jump back to the ground state phase, and then decrease the energy gap until \
+the particles again appear in the high energy phase.  \n\n4) Set the energy \
+gap all the way to zero and notice that the particle is now just as likely to \
+occupy one of the high energy states as it is one of the ground states.   The \
+result is an even distribution among all of the states.   The only thing that \
+determines a particles phase now is how many states are in each phase.   \
+Since at the default configuration, there are 25 times as many high \
+temperature states as low temperature states, we would expect about 3.8% of \
+them to be in the low temperature phase.   To get sharper statistics, you can \
+increaes the population to 1000, but if your machine is having trouble with \
+this much computation, everything can be illustrated with the default \
+population of 100.   In lowering the Energy of that phase, we have lowered \
+the U term in equation 1 and have therefore decreased the Gibbs Free energy\n\
+\n4", "ItemNumbered"],
+ ")  ",
+ StyleBox["Hit the \[OpenCurlyDoubleQuote]Reset\[CloseCurlyDoubleQuote] \
+button to return to the initial configuration.   Now, instead of changing the \
+probabilities for each state, we\[CloseCurlyQuote]ll buy more lottery tickets \
+by increasing the number of states in the high temperature phase.   Set the \
+temperature to 0.4 to get those states at least within reach.   You will \
+notice that more of the particles are already spilling into the high temp \
+phase.    Increase the number of high temp states by using the slider option \
+and observe the percentage of particles in the high energy phase increase.   \
+Entropy ", "ItemNumbered"],
+ StyleBox["S", "ItemNumbered",
+  FontWeight->"Bold"],
+ StyleBox[" is defined as the Log of the number of states.   What we\
+\[CloseCurlyQuote]ve done here is increase the entropy of the high phase.   \
+In doing so,  we have increased the TS term in equation 1 and decreased the \
+gibbs free energy ", "ItemNumbered"],
+ StyleBox["G", "ItemNumbered",
+  FontWeight->"Bold"],
+ StyleBox[".   We now see that when we lower the gibbb energy of a phase \
+relative to the other possible phases, we make that phase more favorable.\
+\[LineSeparator]   ", "ItemNumbered"],
+ "\n",
+ StyleBox["The gibbs energy ", "ItemNumbered"],
+ StyleBox["G", "ItemNumbered",
+  FontWeight->"Bold"],
+ StyleBox[" is calculated using equation 1 (", "ItemNumbered"],
+ StyleBox["G",
+  FontWeight->"Bold"],
+ "=",
+ StyleBox["U",
+  FontWeight->"Bold"],
+ "-",
+ StyleBox["TS",
+  FontWeight->"Bold"],
+ ")",
+ StyleBox[" for both phases.   Take your time playing with the sliders.   \
+notice that the phase with the smallest Gibbs Free energy tends to have a \
+higher percentage of particles.   ", "ItemNumbered"],
+ StyleBox["G", "ItemNumbered",
+  FontWeight->"Bold"],
+ StyleBox[" is thus a metric for telling us at which temperature a phase \
+transition will occur. ", "ItemNumbered"]
+}], "Text",
+ CellChangeTimes->CompressedData["
+1:eJwdxU0oQwEAB/DXbJIWGpmkvG1PTVjTHLhspizWVjgo5iOPvbhYrXyMmY9k
+ZTUabtphWe1Co0S2g8QyUnKYi8MOq615EbKaXbz/O/z6yWjbgFVAEEQtBy8q
+V9+/olk9E46weGm74RerHm9z+M/6Kvrmbv9hJPjZJyex8IOgMGGJabDPy/I7
+tB4dPivs8Md7kyLhS1bvPi8rxexbtRQPBqoofBkSdOLoU9yEe2TD/XjXYeFX
+DulobEqEJ3Hw8HMN7+dv9vB4+UEQL3gjp/h+zNmk4T7po9S4Uct2YDFT0OGH
+FdaAj/MpCz5iDFM4ZRzdwGq/wo2vjHUB7ArQd1gyLYxhfyhd0sbtrIiLsc/c
+3IKXqXo1ztkuyK5MVl+jqpTj4vRIK04WzZvxVrR7AiukJI2v7Z4ZzJAZFxa7
+7Zt4dn2O/x9o+NiD
+  "],
+ CellID->7881542]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "ControlSuggestionsSection"],
+
+Cell[BoxData[
+ TooltipBox[
+  RowBox[{
+   CheckboxBox[False], Cell[" Resize Images"]}],
+  "\"Click inside an image to reveal its orange resize frame.\\nDrag any of \
+the orange resize handles to resize the image.\"",
+  TooltipDelay->0.35]], "ControlSuggestions",
+ FontFamily->"Verdana",
+ CellTags->"ResizeImages"],
+
+Cell[BoxData[
+ TooltipBox[
+  RowBox[{
+   CheckboxBox[False], Cell[" Rotate and Zoom in 3D"]}],
+  RowBox[{
+   "\"Drag a 3D graphic to rotate it. Starting the drag near the center \
+tumbles\\nthe graphic; starting near a corner turns it parallel to the plane \
+of the screen.\\nHold down \"", 
+    FrameBox[
+    "Ctrl", Background -> GrayLevel[0.9], FrameMargins -> 2, FrameStyle -> 
+     GrayLevel[0.9]], "\" (or \"", 
+    FrameBox[
+    "Cmd", Background -> GrayLevel[0.9], FrameMargins -> 2, FrameStyle -> 
+     GrayLevel[0.9]], "\" on Mac) and drag up and down to zoom.\""}],
+  TooltipDelay->0.35]], "ControlSuggestions",
+ FontFamily->"Verdana",
+ CellTags->"RotateAndZoomIn3D"],
+
+Cell[BoxData[
+ TooltipBox[
+  RowBox[{
+   CheckboxBox[False], Cell[" Drag Locators"]}],
+  RowBox[{"\"Drag any locator (\"", 
+    GraphicsBox[
+     LocatorBox[
+      Scaled[{0.5, 0.5}]], ImageSize -> 20], 
+    "\", etc.) to move it around.\""}],
+  TooltipDelay->0.35]], "ControlSuggestions",
+ FontFamily->"Verdana",
+ CellTags->"DragLocators"],
+
+Cell[BoxData[
+ TooltipBox[
+  RowBox[{
+   CheckboxBox[False], Cell[" Create and Delete Locators"]}],
+  RowBox[{"\"Insert a new locator in the graphic by holding down the \"", 
+    FrameBox[
+    "Alt", Background -> GrayLevel[0.9], FrameMargins -> 2, FrameStyle -> 
+     GrayLevel[0.9]], 
+    "\" key\\nand clicking where you want it to be. Delete a locator by \
+clicking it\\nwhile holding down the \"", 
+    FrameBox[
+    "Alt", Background -> GrayLevel[0.9], FrameMargins -> 2, FrameStyle -> 
+     GrayLevel[0.9]], "\" key.\""}],
+  TooltipDelay->0.35]], "ControlSuggestions",
+ FontFamily->"Verdana",
+ CellTags->"CreateAndDeleteLocators"],
+
+Cell[BoxData[
+ TooltipBox[
+  RowBox[{
+   CheckboxBox[False], Cell[" Slider Zoom"]}],
+  RowBox[{"\"Hold down the \"", 
+    FrameBox[
+    "Alt", Background -> GrayLevel[0.9], FrameMargins -> 2, FrameStyle -> 
+     GrayLevel[0.9]], 
+    "\" key while moving a slider to make fine adjustments in the slider \
+value.\\nHold \"", 
+    FrameBox[
+    "Ctrl", Background -> GrayLevel[0.9], FrameMargins -> 2, FrameStyle -> 
+     GrayLevel[0.9]], "\" and/or \"", 
+    FrameBox[
+    "Shift", Background -> GrayLevel[0.9], FrameMargins -> 2, FrameStyle -> 
+     GrayLevel[0.9]], "\" at the same time as \"", 
+    FrameBox[
+    "Alt", Background -> GrayLevel[0.9], FrameMargins -> 2, FrameStyle -> 
+     GrayLevel[0.9]], "\" to make ever finer adjustments.\""}],
+  TooltipDelay->0.35]], "ControlSuggestions",
+ FontFamily->"Verdana",
+ CellTags->"SliderZoom"],
+
+Cell[BoxData[
+ TooltipBox[
+  RowBox[{
+   CheckboxBox[False], Cell[" Gamepad Controls"]}],
+  "\"Control this Demonstration with a gamepad or other\\nhuman interface \
+device connected to your computer.\"",
+  TooltipDelay->0.35]], "ControlSuggestions",
+ CellChangeTimes->{3.35696210375764*^9, 3.3895522232313623`*^9},
+ FontFamily->"Verdana",
+ CellTags->"GamepadControls"],
+
+Cell[BoxData[
+ TooltipBox[
+  RowBox[{
+   CheckboxBox[False], Cell[" Automatic Animation"]}],
+  RowBox[{"\"Animate a slider in this Demonstration by clicking the\"", 
+    AdjustmentBox[
+     Cell[
+      GraphicsData[
+      "CompressedBitmap", 
+       "eJzzTSzJSM1NLMlMTlRwL0osyMhMLlZwyy8CCjEzMjAwcIKwAgOI/R/IhBKc\n\
+/4EAyGAG0f+nTZsGwgysIJIRKsWKLAXGIHFmEpUgLADxWUAkI24jZs+eTaEt\n\
+IG+wQKRmzJgBlYf5lhEA30OqWA=="], "Graphics", ImageSize -> {9, 9}, ImageMargins -> 
+      0, CellBaseline -> Baseline], BoxBaselineShift -> 0.1839080459770115, 
+     BoxMargins -> {{0., 0.}, {-0.1839080459770115, 0.1839080459770115}}], 
+    "\"button\\nnext to the slider, and then clicking the play button that \
+appears.\\nAnimate all controls by selecting \"", 
+    StyleBox["Autorun", FontWeight -> "Bold"], "\" from the\"", 
+    AdjustmentBox[
+     Cell[
+      GraphicsData[
+      "CompressedBitmap", 
+       "eJyNULENwyAQfEySIlMwTVJlCGRFsosokeNtqBmDBagoaZjAI1C8/8GUUUC6\n\
+57h7cQ8PvU7Pl17nUav7oj/TPH7V7b2QJAUAXBkKmCPRowxICy64bRvGGNF7\n\
+X8CctGoDSN4xhIDGGDhzFXwUh3/ClBKrDQPmnGXtI6u0OOd+tZBVUqy1xSaH\n\
+UqiK6pPe4XdEdAz6563tx/gejuORGMxJaz8mdpJn7hc="], "Graphics", 
+      ImageSize -> {10, 10}, ImageMargins -> 0, CellBaseline -> Baseline], 
+     BoxBaselineShift -> 0.1839080459770115, 
+     BoxMargins -> {{0., 0.}, {-0.1839080459770115, 0.1839080459770115}}], 
+    "\"menu.\""}],
+  TooltipDelay->0.35]], "ControlSuggestions",
+ FontFamily->"Verdana",
+ CellTags->"AutomaticAnimation"],
+
+Cell[BoxData[
+ TooltipBox[
+  RowBox[{
+   CheckboxBox[False], Cell[" Bookmark Animation"]}],
+  RowBox[{
+   "\"See a prepared animation of this Demonstration by selecting\\n\"", 
+    StyleBox["Animate Bookmarks", FontWeight -> "Bold"], "\" from the\"", 
+    AdjustmentBox[
+     Cell[
+      GraphicsData[
+      "CompressedBitmap", 
+       "eJyNULENwyAQfEySIlMwTVJlCGRFsosokeNtqBmDBagoaZjAI1C8/8GUUUC6\n\
+57h7cQ8PvU7Pl17nUav7oj/TPH7V7b2QJAUAXBkKmCPRowxICy64bRvGGNF7\n\
+X8CctGoDSN4xhIDGGDhzFXwUh3/ClBKrDQPmnGXtI6u0OOd+tZBVUqy1xSaH\n\
+UqiK6pPe4XdEdAz6563tx/gejuORGMxJaz8mdpJn7hc="], "Graphics", 
+      ImageSize -> {10, 10}, ImageMargins -> 0, CellBaseline -> Baseline], 
+     BoxBaselineShift -> 0.1839080459770115, 
+     BoxMargins -> {{0., 0.}, {-0.1839080459770115, 0.1839080459770115}}], 
+    "\"menu.\""}],
+  TooltipDelay->0.35]], "ControlSuggestions",
+ FontFamily->"Verdana",
+ CellTags->"BookmarkAnimation"]
+}, Open  ]],
+
+Cell["", "SearchTermsSection"],
+
+Cell["", "RelatedLinksSection"],
+
+Cell[CellGroupData[{
+
+Cell["", "AuthorSection"],
+
+Cell["Contributed by: Timothy Mason", "Author",
+ CellChangeTimes->{{3.611431277748987*^9, 3.611431280497825*^9}}]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1263, 611},
+WindowMargins->{{Automatic, -19}, {-64, Automatic}},
+FrontEndVersion->"9.0 for Microsoft Windows (64-bit) (January 25, 2013)",
+StyleDefinitions->FrontEnd`FileName[{"Wolfram"}, "Demonstration.nb", 
+  CharacterEncoding -> "WindowsANSI"]
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{
+ "ResizeImages"->{
+  Cell[69036, 1625, 312, 8, 22, "ControlSuggestions",
+   CellTags->"ResizeImages"]},
+ "RotateAndZoomIn3D"->{
+  Cell[69351, 1635, 678, 16, 22, "ControlSuggestions",
+   CellTags->"RotateAndZoomIn3D"]},
+ "DragLocators"->{
+  Cell[70032, 1653, 340, 11, 22, "ControlSuggestions",
+   CellTags->"DragLocators"]},
+ "CreateAndDeleteLocators"->{
+  Cell[70375, 1666, 637, 15, 22, "ControlSuggestions",
+   CellTags->"CreateAndDeleteLocators"]},
+ "SliderZoom"->{
+  Cell[71015, 1683, 844, 21, 22, "ControlSuggestions",
+   CellTags->"SliderZoom"]},
+ "GamepadControls"->{
+  Cell[71862, 1706, 369, 9, 22, "ControlSuggestions",
+   CellTags->"GamepadControls"]},
+ "AutomaticAnimation"->{
+  Cell[72234, 1717, 1464, 31, 22, "ControlSuggestions",
+   CellTags->"AutomaticAnimation"]},
+ "BookmarkAnimation"->{
+  Cell[73701, 1750, 908, 21, 22, "ControlSuggestions",
+   CellTags->"BookmarkAnimation"]}
+ }
+*)
+(*CellTagsIndex
+CellTagsIndex->{
+ {"ResizeImages", 75260, 1798},
+ {"RotateAndZoomIn3D", 75369, 1801},
+ {"DragLocators", 75479, 1804},
+ {"CreateAndDeleteLocators", 75595, 1807},
+ {"SliderZoom", 75709, 1810},
+ {"GamepadControls", 75815, 1813},
+ {"AutomaticAnimation", 75928, 1816},
+ {"BookmarkAnimation", 76045, 1819}
+ }
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 128, 3, 74, "DemoTitle"],
+Cell[710, 27, 33, 0, 287, "InitializationSection"],
+Cell[CellGroupData[{
+Cell[768, 31, 29, 0, 194, "ManipulateSection"],
+Cell[CellGroupData[{
+Cell[822, 35, 15176, 389, 679, "Input"],
+Cell[16001, 426, 8428, 186, 495, "Output",
+ CellID->359203901]
+}, Open  ]],
+Cell[24444, 615, 114, 2, 27, "Input",
+ CellID->133578715],
+Cell[24561, 619, 135, 3, 27, "Input",
+ CellID->69999300],
+Cell[24699, 624, 113, 2, 27, "Input",
+ CellID->42910845]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[24849, 631, 36, 0, 169, "ManipulateCaptionSection"],
+Cell[24888, 633, 1489, 28, 107, "ManipulateCaption"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[26414, 666, 28, 0, 173, "ThumbnailSection"],
+Cell[CellGroupData[{
+Cell[26467, 670, 119, 2, 27, "Input",
+ CellID->144205357],
+Cell[26589, 674, 8485, 188, 495, "Output"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[35123, 868, 28, 0, 143, "SnapshotsSection"],
+Cell[35154, 870, 8463, 188, 495, "Output"],
+Cell[43620, 1060, 8427, 186, 495, "Output",
+ CellID->337000824],
+Cell[52050, 1248, 8448, 186, 495, "Output",
+ CellID->68636874]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[60535, 1439, 26, 0, 336, "DetailsSection"],
+Cell[60564, 1441, 8395, 177, 641, "Text",
+ CellID->7881542]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[68996, 1623, 37, 0, 126, "ControlSuggestionsSection"],
+Cell[69036, 1625, 312, 8, 22, "ControlSuggestions",
+ CellTags->"ResizeImages"],
+Cell[69351, 1635, 678, 16, 22, "ControlSuggestions",
+ CellTags->"RotateAndZoomIn3D"],
+Cell[70032, 1653, 340, 11, 22, "ControlSuggestions",
+ CellTags->"DragLocators"],
+Cell[70375, 1666, 637, 15, 22, "ControlSuggestions",
+ CellTags->"CreateAndDeleteLocators"],
+Cell[71015, 1683, 844, 21, 22, "ControlSuggestions",
+ CellTags->"SliderZoom"],
+Cell[71862, 1706, 369, 9, 22, "ControlSuggestions",
+ CellTags->"GamepadControls"],
+Cell[72234, 1717, 1464, 31, 22, "ControlSuggestions",
+ CellTags->"AutomaticAnimation"],
+Cell[73701, 1750, 908, 21, 22, "ControlSuggestions",
+ CellTags->"BookmarkAnimation"]
+}, Open  ]],
+Cell[74624, 1774, 30, 0, 155, "SearchTermsSection"],
+Cell[74657, 1776, 31, 0, 129, "RelatedLinksSection"],
+Cell[CellGroupData[{
+Cell[74713, 1780, 25, 0, 129, "AuthorSection"],
+Cell[74741, 1782, 113, 1, 22, "Author"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
